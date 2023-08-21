@@ -16,41 +16,54 @@
         }
 
         @media print {
-        body {
-            margin: 0;
-            padding: 0;
-        }
+            body {
+                margin: 0;
+                padding: 0;
+            }
 
-        table {
-            height: 100vh;
-            width: 100vw;
-        }
+            table {
+                height: 100vh;
+                width: 100vw;
+            }
 
-        td {
-            margin: 20px;
-            width: 33.3%;
-            height: 33.3%;
+            td {
+                margin: 20px;
+                width: 33.3%;
+                height: 33.3%;
+            }
         }
-    }
+        
+        .gradient-header {
+            text-align: center;
+            color: white;
+            background: linear-gradient(to right, orange, blue);
+        }
+        
+        .Terminal {
+            text-align: left;
+            color: green;
+            background: black;
+        }
     
-    .button {
-    width: 100px;
-    background-color: #4CAF50; /* 绿色 */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-}
+        .button {
+            width: 100px;
+            background-color: #4CAF50; /* 绿色 */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
 
-.button2 {background-color: #008CBA;} /* 蓝色 */
-.button3 {background-color: #f44336;} /* 红色 */
-.button4 {background-color: #e7e7e7; color: black;} /* 灰色 */
-.button5 {background-color: #555555;} /* 黑色 */
+        .button2 {background-color: #008CBA;} /* Blue */
+        .button3 {background-color: #f44336;} /* Red */
+        .button4 {background-color: #e7e7e7; color: black;} /* Grey */
+        .button5 {background-color: #FF00FF;} /* Purple */
+        .button6 {background-color: #008080;} /* Teal */
     
     </style>
     <script>
@@ -91,16 +104,30 @@
                 commandInput.value = "";
             });
         }
+        function toggleButtonText() {
+            submitForm(event, 'L')
+            const btn = document.getElementById('toggleButton');
+                if (btn.innerHTML === 'On') {
+                btn.innerHTML = 'Off';
+            } else {
+                btn.innerHTML = 'On';
+        }
+    }
+
     </script>
 </head>
 <body>
+<div class="gradient-header">
+    <br>
     <h1 style="text-align:center;"><strong>GUI Serial Communication Terminal </strong></h1>
-    <p style="text-align:center;"> Build Version: 0821B. Powered by: <a href=https://github.com/TechPioneers2023>TechPioneers</a> @NUS School of Computing </p>
-    
+    <p style="text-align:center;"> Build Version: 0821B. Powered by: <a href="https://github.com/TechPioneers2023" style="color: white;">TechPioneers</a> @NUS School of Computing </p>
+    <br>
+</div>
+<br>
     <div align="center">
     <form onsubmit="submitForm(event)">
-        <input type="text" name="command" placeholder="Command Line" required>
-        <button type="submit">Confirm</button>
+        <input type="text" style="width:520px" name="command" placeholder="Command Line" required>
+        <button type="submit">Submit</button>
     </form>
     
     <!-- <button class="button">Green</button> -->
@@ -143,12 +170,22 @@
         <td><button class="button button" onclick="submitForm(event, 'E')">▶|◀</button></td>
         <td><button class="button button" onclick="submitForm(event, 'Q')">◀|▶</button></td>
         <td>Claw</td>
-
+    </tr>
+    <tr>
+        <td><button class="button button5" id="toggleButton" onclick="toggleButtonText()">On</button></td>
+        <td><button class="button button6" onclick="submitForm(event, '')">Fn 1</button></td>
+        <td><button class="button button6" onclick="submitForm(event, '')">Fn 2</button></td>
+        <td><button class="button button6" onclick="submitForm(event, '')">Fn 3</button></td>
+        <td><button class="button button6" onclick="submitForm(event, '')">Fn 4</button></td>
+        <td>Function</td>
     </tr>
     </table>
+
+
     </div>
-    
-    <h2>Arduino Responses:</h2>
+    <hr>
+    <h2 align="center">Retrieving from Arduino (Connected: dev/ttyUSB0)</h2>
+    <div class="Terminal">
     <div id="responses">
         {% if response %}
         <div class="arduino-output" id="arduinoResponse">{{ response }}</div>
