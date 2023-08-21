@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Terminal</title>
+    <style>
+        body {
+            font-family: monospace;
+        }
+        
+        .arduino-output {
+            white-space: pre-wrap;
+        }
+        td {
+            border: 0px;
+            text-align:center;
+        }
+
+        @media print {
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        table {
+            height: 100vh;
+            width: 100vw;
+        }
+
+        td {
+            margin: 20px;
+            width: 33.3%;
+            height: 33.3%;
+        }
+    }
+    
+    .button {
+    width: 100px;
+    background-color: #4CAF50; /* 绿色 */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.button2 {background-color: #008CBA;} /* 蓝色 */
+.button3 {background-color: #f44336;} /* 红色 */
+.button4 {background-color: #e7e7e7; color: black;} /* 灰色 */
+.button5 {background-color: #555555;} /* 黑色 */
+    
+    </style>
+    <script>
+        function submitForm(event, command) {
+            event.preventDefault(); 
+
+            let commandInput = document.querySelector("[name='command']");
+            
+            if(command) {
+                commandInput.value = command;
+            }
+
+            let cmd = commandInput.value;
+
+            // 使用Fetch API向服务器发送POST请求
+            fetch('/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: "command=" + cmd,
+            })
+            .then(response => response.text())
+            .then(htmlData => {
+
+                let parser = new DOMParser();
+                let htmlDocument = parser.parseFromString(htmlData, "text/html");
+                let responseText = htmlDocument.getElementById("arduinoResponse").textContent;
+
+                let formattedResponse = responseText.split(" ").join("&nbsp;");
+                
+                let responsesDiv = document.getElementById("responses");
+                let newResponse = document.createElement("div");
+                newResponse.innerHTML = formattedResponse; 
+                newResponse.className = "arduino-output";
+                responsesDiv.insertBefore(newResponse, responsesDiv.firstChild);
+
+                commandInput.value = "";
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1 style="text-align:center;"><strong>GUI Serial Communication Terminal </strong></h1>
+    <p style="text-align:center;"> Build Version: 0821B. Powered by: <a href=https://github.com/TechPioneers2023>TechPioneers</a> @NUS School of Computing </p>
+    
+    <div align="center">
+    <form onsubmit="submitForm(event)">
+        <input type="text" name="command" placeholder="Command Line" required>
+        <button type="submit">Confirm</button>
+    </form>
+    
+    <!-- <button class="button">Green</button> -->
+    <!-- <button class="button button2">Blue</button> -->
+    <!-- <button class="button button3">Red</button> -->
+    <!-- <button class="button button4">Gray</button> -->
+    <!-- <button class="button button5">Black</button> -->
+    
+    <!-- 按钮 -->
+    <table>
+    <tr>
+        <td></td>
+        <td><button class="button button2" onclick="submitForm(event, 'W')">▲</button></td>
+        <td></td>
+        <td><button class="button button" onclick="submitForm(event, '6')">↺</button></td>
+        <td><button class="button button" onclick="submitForm(event, '9')">↻</button></td>
+        <td><p>Servo 3</p></td>
+    </tr>
+    <tr>
+        <td><button class="button button2" onclick="submitForm(event, 'A')">◀</button></td>
+        <td><button class="button button3" onclick="submitForm(event, ' ')">●</button></td>
+        <td><button class="button button2" onclick="submitForm(event, 'D')">▶</button></td>
+        <td><button class="button button" onclick="submitForm(event, '8')">⇧</button></td>
+        <td><button class="button button" onclick="submitForm(event, '5')">⇩</button></td>
+        <td>Servo 2</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><button class="button button2" onclick="submitForm(event, 'S')">▼</button></td>
+        <td></td>
+        <td><button class="button button" onclick="submitForm(event, '7')">⇧</button></td>
+        <td><button class="button button" onclick="submitForm(event, '4')">⇩</button></td>
+        <td>Servo 1</td>
+        
+    </tr>
+    <tr>
+        <td><button class="button button4" onclick="submitForm(event, '1')">I</button></td>
+        <td><button class="button button4" onclick="submitForm(event, '2')">II</button></td>
+        <td><button class="button button4" onclick="submitForm(event, '3')">III</button></td>
+        <td><button class="button button" onclick="submitForm(event, 'E')">▶|◀</button></td>
+        <td><button class="button button" onclick="submitForm(event, 'Q')">◀|▶</button></td>
+        <td>Claw</td>
+
+    </tr>
+    </table>
+    </div>
+    
+    <h2>Arduino Responses:</h2>
+    <div id="responses">
+        {% if response %}
+        <div class="arduino-output" id="arduinoResponse">{{ response }}</div>
+        {% endif %}
+    </div>
+</body>
+</html>
