@@ -64,6 +64,7 @@
         .button4 {background-color: #e7e7e7; color: black;} /* Grey */
         .button5 {background-color: #FF00FF;} /* Purple */
         .button6 {background-color: #008080;} /* Teal */
+        .button7 {background-color: #FFC300;} /* Orange */
     
     </style>
     <script>
@@ -104,15 +105,71 @@
                 commandInput.value = "";
             });
         }
-        function toggleButtonText() {
+        function toggleButtonText_Light() {
             submitForm(event, 'L')
-            const btn = document.getElementById('toggleButton');
+            const btn = document.getElementById('toggleButton_Light');
                 if (btn.innerHTML === 'On') {
                 btn.innerHTML = 'Off';
             } else {
                 btn.innerHTML = 'On';
         }
     }
+            function toggleButtonText_Claw() {
+            
+            const btn = document.getElementById('toggleButton_Claw');
+                if (btn.innerHTML === '◀|▶') {
+                    submitForm(event, 'Q')
+                btn.innerHTML = '▶|◀';
+            } else {
+                    submitForm(event, 'E')
+                btn.innerHTML = '◀|▶';
+        }
+    }
+            function toggleButtonText_SC() {
+            
+            const btn = document.getElementById('toggleButton_SC');
+                if (btn.innerHTML === 'STEP') {
+                    submitForm(event, '1')
+                btn.innerHTML = 'CONT';
+            } else {
+                    submitForm(event, '1')
+                btn.innerHTML = 'STEP';
+        }
+    }
+            function toggleButtonText_Hit() {
+            
+            const btn = document.getElementById('toggleButton_Hit');
+                if (btn.innerHTML === 'PREP') {
+                    submitForm(event, 'B')
+                btn.innerHTML = 'HIT!';
+            } else {
+                    submitForm(event, 'N')
+                btn.innerHTML = 'PREP';
+        }
+    }
+            function toggleButtonText_R() {
+            
+            const btn = document.getElementById('toggleButton_R');
+                if (btn.innerHTML === '---') {
+                    submitForm(event, 'R')
+                btn.innerHTML = '|';
+            } else {
+                    submitForm(event, 'R')
+                btn.innerHTML = '---';
+        }
+    }
+        function changeColor(activeBtnId, inactiveBtnId) {
+        // 被点击的按钮颜色
+        let activeBtn = document.getElementById(activeBtnId);
+        activeBtn.style.backgroundColor = "black";
+        activeBtn.style.color = "white";
+
+        // 未被点击的按钮颜色
+        let inactiveBtn = document.getElementById(inactiveBtnId);
+        inactiveBtn.style.backgroundColor = "";
+        inactiveBtn.style.color = "";
+    }
+
 
     </script>
 </head>
@@ -120,7 +177,7 @@
 <div class="gradient-header">
     <br>
     <h1 style="text-align:center;"><strong>GUI Serial Communication Terminal </strong></h1>
-    <p style="text-align:center;"> Build Version: 0821B. Powered by: <a href="https://github.com/TechPioneers2023" style="color: white;">TechPioneers</a> @NUS School of Computing </p>
+    <p style="text-align:center;"> Build Version: 0824B. Powered by: <a href="https://github.com/TechPioneers2023" style="color: white;">TechPioneers</a> @NUS School of Computing </p>
     <br>
 </div>
 <br>
@@ -139,9 +196,9 @@
     <!-- 按钮 -->
     <table>
     <tr>
-        <td></td>
+        <td><button class="button button2" onclick="submitForm(event, '')">◤</button></td>
         <td><button class="button button2" onclick="submitForm(event, 'W')">▲</button></td>
-        <td></td>
+        <td><button class="button button2" onclick="submitForm(event, '')">◥</button></td>
         <td><button class="button button" onclick="submitForm(event, '6')">↺</button></td>
         <td><button class="button button" onclick="submitForm(event, '9')">↻</button></td>
         <td><p>Servo 3</p></td>
@@ -164,24 +221,27 @@
         
     </tr>
     <tr>
-        <td><button class="button button4" onclick="submitForm(event, '1')">I</button></td>
-        <td><button class="button button4" onclick="submitForm(event, '2')">II</button></td>
-        <td><button class="button button4" onclick="submitForm(event, '3')">III</button></td>
-        <td><button class="button button" onclick="submitForm(event, 'E')">▶|◀</button></td>
-        <td><button class="button button" onclick="submitForm(event, 'Q')">◀|▶</button></td>
+        <td><button class="button button4" id="toggleButton_SC" onclick="toggleButtonText_SC()">STEP</button></td>
+        <td><button id="btn1" style="background-color: black; color: white;" class="button button4" onclick="changeColor('btn1', 'btn2'); submitForm(event, '2')">MED</button></td>
+        <td><button id="btn2" class="button button4" onclick="changeColor('btn2', 'btn1'); submitForm(event, '3')">HIGH</button></td>
+        <td><button class="button button" id="toggleButton_Claw" onclick="toggleButtonText_Claw()">◀|▶</button></td>
+        <td><button class="button button" id="toggleButton_R" onclick="toggleButtonText_R()">|</button></td>
         <td>Claw</td>
     </tr>
     <tr>
-        <td><button class="button button5" id="toggleButton" onclick="toggleButtonText()">On</button></td>
-        <td><button class="button button6" onclick="submitForm(event, '')">Fn 1</button></td>
-        <td><button class="button button6" onclick="submitForm(event, '')">Fn 2</button></td>
-        <td><button class="button button6" onclick="submitForm(event, '')">Fn 3</button></td>
-        <td><button class="button button6" onclick="submitForm(event, '')">Fn 4</button></td>
+        <td><button class="button button5" id="toggleButton_Light" onclick="toggleButtonText_Light()">On</button></td>
+        <td><button class="button button6" onclick="submitForm(event, 'J')">SeSaW</button></td>
+        <td><button class="button button6" onclick="submitForm(event, 'U')">Grab</button></td>
+        <td><button class="button button" id="toggleButton_Hit" onclick="toggleButtonText_Hit()">PREP</button></td>
+        <td><button class="button button3" onclick="submitForm(event, 'H')">⊗</button></td>
         <td>Function</td>
     </tr>
+    <tr>
+    <th colspan="5"><button class="button button3" style="width: 536px"onclick="submitForm(event, 'X');">EMERGENCY STOP&nbsp;&nbsp;程序终止&nbsp;&nbsp;紧急ボタン&nbsp;&nbsp;அவசர நிறுத்தி</button></th>
+    <td>Reset</td>
+    </tr>
     </table>
-
-
+    
     </div>
     <hr>
     <h2 align="center">Retrieving from Arduino (Connected: dev/ttyUSB0)</h2>
